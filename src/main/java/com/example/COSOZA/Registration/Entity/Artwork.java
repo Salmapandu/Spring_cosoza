@@ -14,8 +14,8 @@ public class Artwork {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int artwork_id;
-    private String type;
-    private String title;
+    private String artworktype;
+    private String artworktitle;
 
 
 

@@ -15,8 +15,17 @@ public class Licensee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int licensee_id;
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String date;
+    private String gender;
+    private String licensetype;
+    private String deviceused;
+    private String reg_no;
     private String address;
-    private String mobile_phone;
+
+
 
 
 

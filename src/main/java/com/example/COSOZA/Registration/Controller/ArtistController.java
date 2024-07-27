@@ -13,8 +13,8 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("api/artist")
-
 public class ArtistController {
+
     @Autowired
     public ArtistService artistService;
 
@@ -23,63 +23,60 @@ public class ArtistController {
         try {
             Artist artist1 = artistService.save(artist);
             return new ResponseEntity<>("Artist was posted", HttpStatus.OK);
-
-
-        }catch (Exception e){
-            return new ResponseEntity<>("artist was not posted",HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Artist was not posted: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("get/artists")
 
-    public ResponseEntity<?> getArtist(){
+    @GetMapping("get/artists")
+    public ResponseEntity<?> getArtist() {
         try {
             List<Artist> ArtistList = artistService.findAll();
-            if (ArtistList.isEmpty()){
-                return new ResponseEntity<>("Artist was not added",HttpStatus.BAD_REQUEST);
+            if (ArtistList.isEmpty()) {
+                return new ResponseEntity<>("No artists found", HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(ArtistList, HttpStatus.OK);
             }
-            else {
-                return new ResponseEntity<>(ArtistList,HttpStatus.ACCEPTED);
-            }
-        }catch (Exception e){
-            return new ResponseEntity<>("artist added successful",HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to retrieve artists: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PutMapping("update/{artist_id}")
-    public ResponseEntity<?> updateArtist(@PathVariable int artist_id, @RequestBody Artist artist){
+    public ResponseEntity<?> updateArtist(@PathVariable int artist_id, @RequestBody Artist artist) {
         try {
-            if (artistService.findById(artist_id).isPresent()){
-                Artist artist1 =artistService.save(artist);
-                return new ResponseEntity<>("artist updated",HttpStatus.OK);
-            }else {
-                return new ResponseEntity<>("artist not updated",HttpStatus.BAD_REQUEST);
+            if (artistService.findById(artist_id).isPresent()) {
+                artistService.save(artist);
+                return new ResponseEntity<>("Artist updated", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Artist not found", HttpStatus.NOT_FOUND);
             }
-        }catch (Exception e){
-            return new ResponseEntity<>("artist updated required",HttpStatus.BAD_GATEWAY);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to update artist: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/delete/{artist_id}")
-    public ResponseEntity<?> deleteArtist(@PathVariable int artist_id){
+    public ResponseEntity<?> deleteArtist(@PathVariable int artist_id) {
         try {
             artistService.deleteById(artist_id);
-            return new ResponseEntity<>("artist was deleted",HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>("artist was not deleted",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Artist was deleted", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete artist: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("getById/{artist_id}")
-    public ResponseEntity<?> getArtistById(@PathVariable int artist_id){
+    public ResponseEntity<?> getArtistById(@PathVariable int artist_id) {
         try {
-            Optional<Artist> optionalArtist =artistService.findById(artist_id);
-            if (optionalArtist.isPresent()){
-                return new ResponseEntity<>(optionalArtist,HttpStatus.OK);
+            Optional<Artist> optionalArtist = artistService.findById(artist_id);
+            if (optionalArtist.isPresent()) {
+                return new ResponseEntity<>(optionalArtist, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Artist not found", HttpStatus.NOT_FOUND);
             }
-            else {
-                return new ResponseEntity<>("artist was accessed successful",HttpStatus.OK);
-            }
-        }catch (Exception e){
-            return new ResponseEntity<>("artist was not accessed",HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to retrieve artist: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

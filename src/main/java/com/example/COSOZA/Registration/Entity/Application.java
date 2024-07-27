@@ -17,8 +17,8 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int application_id;
-    private String date;
-    private String type;
+    private String application_date;
+    private String application_type;
 
 
     @ManyToOne
