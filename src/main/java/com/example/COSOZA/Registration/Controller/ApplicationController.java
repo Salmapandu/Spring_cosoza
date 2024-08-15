@@ -23,9 +23,9 @@ public class ApplicationController {
     public ResponseEntity<?> createApplication(@RequestBody Application application) {
         try {
             Application application1 = applicationService.save(application);
-            return new ResponseEntity<>("application was posted", HttpStatus.OK);
+            return new ResponseEntity<>("application was added successfully", HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("application was not posted",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("application was failed",HttpStatus.BAD_REQUEST);
         }
     }
         @GetMapping("get/applications")
@@ -47,23 +47,24 @@ public class ApplicationController {
     @PutMapping("update/{application_id}")
     public ResponseEntity<?> updateApplication(@PathVariable int application_id, @RequestBody Application application){
         try {
-            if (applicationService.findById(application_id).isPresent()){
-                Application application1 = applicationService.save(application);
-                return new ResponseEntity<>("appication updated",HttpStatus.OK);
+            Optional<Application> existingApplication = applicationService.findById(application_id);
+            if (existingApplication.isPresent()){
+                applicationService.save(application);
+                return new ResponseEntity<>("application updated successfully",HttpStatus.OK);
             }else {
-                return new ResponseEntity<>("application was not updated",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("application was not found",HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("application required updated",HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity<>("failed  to updated application",HttpStatus.BAD_REQUEST);
         }
     }
    @DeleteMapping("/delete/{application_id}")
-   public ResponseEntity<?> deleteApplication(@PathVariable int application_id) {
+   public ResponseEntity<?> deleteApplicationById(@PathVariable int application_id) {
         try {
             applicationService.deleteById(application_id);
-            return new ResponseEntity<>("application was deleted",HttpStatus.OK);
+            return new ResponseEntity<>("application deleted successfully ",HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("application was not deleted",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("failed to deleted application",HttpStatus.BAD_REQUEST);
         }
    }
 
@@ -75,10 +76,10 @@ public class ApplicationController {
                 return new ResponseEntity<>(optionalApplication,HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>("application was accessed successful",HttpStatus.OK);
+                return new ResponseEntity<>("application was not found ",HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("application was not accessed",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("failed to retrieve application",HttpStatus.BAD_REQUEST);
         }
    }
 }

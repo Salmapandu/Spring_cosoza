@@ -22,10 +22,10 @@ public class StaffController {
     public ResponseEntity<?> createStaff(@RequestBody Staff staff) {
         try {
             Staff staff1 = staffService.save(staff);
-            return new ResponseEntity<>("staff was posted", HttpStatus.OK);
+            return new ResponseEntity<>("staff added successfully", HttpStatus.OK);
 
         }catch (Exception e){
-            return new ResponseEntity<>("staff was not posted", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(" failed to add staff", HttpStatus.BAD_REQUEST);
         }
 
 
@@ -36,14 +36,14 @@ public class StaffController {
         try {
             List<Staff> StaffList = staffService.findAll();
             if (StaffList.isEmpty()){
-                return new ResponseEntity<>("staff not added", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("staff not found", HttpStatus.OK);
 
             }
             else {
-                return new ResponseEntity<>(StaffList,HttpStatus.ACCEPTED);
+                return new ResponseEntity<>(StaffList,HttpStatus.OK);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("staff added successful",HttpStatus.OK);
+            return new ResponseEntity<>("Failed to retrieve staff",HttpStatus.BAD_REQUEST);
 
         }
     }
@@ -51,23 +51,24 @@ public class StaffController {
     @PutMapping("update/{staff_id}")
     public ResponseEntity<?> updateStaff(@PathVariable int staff_id, @RequestBody Staff staff){
         try {
-            if (staffService.findById(staff_id).isPresent()){
+            Optional<Staff> existingStaff = staffService.findById(staff_id);
+            if (existingStaff.isPresent()){
                 Staff staff1 = staffService.save(staff);
-                return new ResponseEntity<>("staff was updated", HttpStatus.OK);
+                return new ResponseEntity<>("staff was updated successfully", HttpStatus.OK);
             }else {
-                return new ResponseEntity<>("staff was not updated", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("staff not found", HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("staff updated required",HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity<>(" failed to update staff",HttpStatus.BAD_REQUEST);
         }
     }
     @DeleteMapping("/delete/{staff_id}")
     public ResponseEntity<?> deleteStaff(@PathVariable int staff_id ) {
         try {
             staffService.deleteById(staff_id);
-            return new ResponseEntity<>("staff was deleted", HttpStatus.OK);
+            return new ResponseEntity<>("staff was deleted successfully", HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("staff was not deleted",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("failed to delete staff",HttpStatus.BAD_REQUEST);
 
         }
 
@@ -80,10 +81,10 @@ public class StaffController {
                 return new ResponseEntity<>(optionalStaff,HttpStatus.OK );
             }
             else {
-                return new ResponseEntity<>("staff was accessed successful",HttpStatus.OK);
+                return new ResponseEntity<>("staff not found ",HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("staff was not accessed",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Failed to retrieve staff ",HttpStatus.BAD_REQUEST);
         }
 
     }

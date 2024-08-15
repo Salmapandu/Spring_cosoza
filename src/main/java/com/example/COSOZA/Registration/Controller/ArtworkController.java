@@ -24,46 +24,47 @@ public class ArtworkController {
     public ResponseEntity<?> createArtwork(@RequestBody Artwork artwork) {
         try {
             Artwork artwork1 = artworkService.save(artwork);
-            return new ResponseEntity<>("artwork was posted", HttpStatus.OK);
+            return new ResponseEntity<>("artwork added successfully", HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("artwork was not posted",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("failed to add artwork",HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("get/arti")
+    @GetMapping("get/artwork")
     public ResponseEntity<?> getArtwork(){
         try {
             List<Artwork> ArtworkList = artworkService.findAll();
             if (ArtworkList.isEmpty()){
-                return new ResponseEntity<>("artwork not added",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("no artwork found ",HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>(ArtworkList,HttpStatus.ACCEPTED);
+                return new ResponseEntity<>(ArtworkList,HttpStatus.OK);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("artwork added successful",HttpStatus.OK);
+            return new ResponseEntity<>("failed to retrieve artwork",HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("update/{artwork_id}")
     public ResponseEntity<?> updateArtwork(@PathVariable int artwork_id,@RequestBody Artwork artwork){
         try {
-            if (artworkService.findById(artwork_id).isPresent()){
-                Artwork artwork1 = artworkService.save(artwork);
-                return new ResponseEntity<>("artwork updated",HttpStatus.OK);
+            Optional<Artwork> existingArtwork = artworkService.findById(artwork_id);
+            if (existingArtwork.isPresent()) {
+                artworkService.save(artwork);
+                return new ResponseEntity<>("artwork updated successfully",HttpStatus.OK);
             }else {
-                return new ResponseEntity<>("artwork not updated",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("artwork not found",HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("artwork updated required",HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity<>("failed to update artwork",HttpStatus.BAD_REQUEST);
         }
     }
     @DeleteMapping("/delete/{artwork_id}")
     public ResponseEntity<?> deleteArtwork(@PathVariable int artwork_id){
         try {
             artworkService.deleteById(artwork_id);
-            return new ResponseEntity<>("artwork was deleted",HttpStatus.OK);
+            return new ResponseEntity<>("artwork was deleted successfully",HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("artwork was not deleted",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("failed to delete artwork",HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -72,13 +73,13 @@ public class ArtworkController {
         try {
             Optional<Artwork> optionalArtwork = artworkService.findById(artwork_id);
             if (optionalArtwork.isPresent()){
-                return new ResponseEntity<>(optionalArtwork,HttpStatus.OK);
+                return new ResponseEntity<>(optionalArtwork.get(), HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>("artwork was accessed successful",HttpStatus.OK);
+                return new ResponseEntity<>("artwork not found",HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("artwork was not accessed",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("failed to retrieve artwork",HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -22,9 +22,9 @@ public class LicenseeController {
     public ResponseEntity<?> createLicensee(@RequestBody Licensee licensee){
         try {
             Licensee licensee1 = licenseeService.save(licensee);
-            return new ResponseEntity<>("licensee was posted", HttpStatus.OK);
+            return new ResponseEntity<>("licensee added successfully", HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("licensee was not posted",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("failed to add licensee",HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("get/licensees")
@@ -32,36 +32,37 @@ public class LicenseeController {
         try {
             List<Licensee> LicenseeList = licenseeService.findAll();
             if (LicenseeList.isEmpty()){
-                return new ResponseEntity<>("licensee was not added", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("no found licensee", HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>(LicenseeList,HttpStatus.ACCEPTED);
+                return new ResponseEntity<>(LicenseeList,HttpStatus.OK);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("licensee added successful",HttpStatus.OK);
+            return new ResponseEntity<>(" failed to retrieve licensee",HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("update/{licensee_id}")
     public ResponseEntity<?> updateLicensee(@PathVariable int licensee_id, @RequestBody Licensee licensee){
         try {
-            if (licenseeService.findById(licensee_id).isPresent()){
-                Licensee licensee1 = licenseeService.save(licensee);
-                return new ResponseEntity<>("licensee updated",HttpStatus.OK);
+            Optional<Licensee> existingLicensee = licenseeService.findById(licensee_id);
+            if (existingLicensee.isPresent()) {
+                licenseeService.save(licensee);
+                return new ResponseEntity<>("licensee updated successfully",HttpStatus.OK);
             }else {
-                return new ResponseEntity<>("licensee not updated",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("licensee not found",HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("licensee required updated",HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity<>(" failed to update licensee",HttpStatus.BAD_REQUEST);
         }
     }
     @DeleteMapping("/delete/{licensee_id}")
     public ResponseEntity<?> deleteLicensee(@PathVariable int licensee_id){
         try {
             licenseeService.deleteById(licensee_id);
-            return new ResponseEntity<>("licensee was deleted",HttpStatus.OK);
+            return new ResponseEntity<>("licensee was deleted successfully",HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("licensee was not deleted",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(" failed to delete licensee",HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("getById/{licensee_id}")
@@ -69,13 +70,13 @@ public class LicenseeController {
         try {
             Optional<Licensee> optionalLicensee = licenseeService.findById(licensee_id);
             if (optionalLicensee.isPresent()){
-                return new ResponseEntity<>(optionalLicensee,HttpStatus.OK);
+                return new ResponseEntity<>(optionalLicensee.get(),HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>("licensee was accessed successful",HttpStatus.OK);
+                return new ResponseEntity<>("licensee not found",HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            return new ResponseEntity<>("licensee was not accessed",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(" failed to retrieve licensee",HttpStatus.BAD_REQUEST);
         }
     }
 }
