@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/artwork")
+@RequestMapping("api/v1/artwork")
 
 
 

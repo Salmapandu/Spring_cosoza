@@ -17,6 +17,11 @@ public class Staff  {
     private int staff_id;
     private String address;
     private String mobile_phone;
+    private String email;
+    private String password;
+
+
+
 
 }
 

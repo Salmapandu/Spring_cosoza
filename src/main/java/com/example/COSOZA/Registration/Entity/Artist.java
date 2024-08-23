@@ -19,6 +19,7 @@ public class Artist {
     private String address;
     private String email;
     private String phone;
+    private String password;
 
 
 

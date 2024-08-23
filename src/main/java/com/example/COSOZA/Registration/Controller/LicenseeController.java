@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/licensee")
+@RequestMapping("api/v1/licensee")
 
 public class LicenseeController {
     @Autowired

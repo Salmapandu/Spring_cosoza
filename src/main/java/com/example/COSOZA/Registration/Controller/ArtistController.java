@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/artist")
+@RequestMapping("api/v1/artist")
 public class ArtistController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class ArtistController {
     @PostMapping("add/artist")
     public ResponseEntity<?> createArtist(@RequestBody Artist artist) {
         try {
-            Artist artist1 = artistService.save(artist);
+//            Artist artist1 = artistService.save(artist);
             return new ResponseEntity<>("Artist was added successfully", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Artist was failed to added: ", HttpStatus.BAD_REQUEST);
@@ -47,7 +47,7 @@ public class ArtistController {
         try {
             Optional<Artist> existingArtist = artistService.findById(artist_id);
             if (existingArtist.isPresent()) {
-                artistService.save(artist);
+//                artistService.save(artist);
                 return new ResponseEntity<>("Artist updated successfully", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Artist not found", HttpStatus.NOT_FOUND);

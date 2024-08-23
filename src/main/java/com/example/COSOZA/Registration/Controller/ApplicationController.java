@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/application")
+@RequestMapping("api/v1/application")
 
 public class ApplicationController {
 
