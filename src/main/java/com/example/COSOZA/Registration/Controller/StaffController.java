@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
-@RequestMapping("api/v1/staffs")
+//@CrossOrigin("*")
+@RequestMapping("/api/v1/staffs/")
 
 public class StaffController {
     @Autowired
@@ -62,7 +62,7 @@ public class StaffController {
             return new ResponseEntity<>(" failed to update staff",HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping("/delete/{staff_id}")
+    @DeleteMapping("delete/{staff_id}")
     public ResponseEntity<?> deleteStaff(@PathVariable int staff_id ) {
         try {
             staffService.deleteById(staff_id);

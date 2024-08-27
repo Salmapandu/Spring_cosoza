@@ -11,6 +11,7 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
 
+    //This Api
     @PostMapping("register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
@@ -18,7 +19,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.register(request));
 
     }
-
+//This Api
     @PostMapping("login")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody AuthenticationRequest request

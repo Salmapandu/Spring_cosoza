@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
-@RequestMapping("api/v1/payment")
+//@CrossOrigin("*")
+@RequestMapping("/api/v1/payment/")
 
 public class PaymentController {
     @Autowired
@@ -33,7 +33,7 @@ public class PaymentController {
         }
     }
 
-    @GetMapping("/controlnumber/{application_id}")
+    @GetMapping("controlnumber/{application_id}")
     public ResponseEntity<String> generatecontrolnumber(@PathVariable int application_id){
         Application application = applicationRepository.findById(application_id).orElseThrow();
         Payment payment = new Payment();

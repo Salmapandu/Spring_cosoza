@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @RestController
-public class CosozaRegistrationApplication {
+public class CosozaRegistrationApplication implements WebMvcConfigurer{
 
 	public static void main(String[] args) {
 		SpringApplication.run(CosozaRegistrationApplication.class, args);
@@ -20,10 +20,12 @@ public class CosozaRegistrationApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry
-						.addMapping("/**")
-						.allowedOrigins("*")
-						.allowedMethods("GET", "POST", "PUT", "OPTIONS");
+				registry.addMapping("/**")
+						.allowedOrigins("http://localhost:4200") // Allow requests only from localhost:4200
+						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow these HTTP methods
+						.allowedHeaders("Content-Type", "Authorization") // Allow these headers
+						.allowCredentials(true) // Allow credentials like cookies
+						.maxAge(3600); // Cache preflight requests for 3600 seconds (1 hour)
 			}
 		};
 	}

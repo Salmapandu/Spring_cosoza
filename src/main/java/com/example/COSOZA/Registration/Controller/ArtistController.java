@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
-@RequestMapping("api/v1/artist")
+//@CrossOrigin("*")
+@RequestMapping("api/v1/artist/")
 public class ArtistController {
 
     @Autowired
@@ -57,7 +57,7 @@ public class ArtistController {
         }
     }
 
-    @DeleteMapping("/delete/{artist_id}")
+    @DeleteMapping("delete/{artist_id}")
     public ResponseEntity<?> deleteArtistById(@PathVariable int artist_id) {
         try {
             artistService.deleteById(artist_id);

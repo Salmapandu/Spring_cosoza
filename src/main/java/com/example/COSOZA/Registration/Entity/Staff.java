@@ -11,15 +11,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "staff")
 
-public class Staff  {
+public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int staff_id;
+    private Integer id;
+    private String firstname;
+    private String lastname;
+    private String email;
     private String address;
     private String mobile_phone;
-    private String email;
     private String password;
-
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
 
 
 
